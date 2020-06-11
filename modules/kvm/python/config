@@ -1,0 +1,34 @@
+<domain type="kvm">
+    <name>@name</name>
+    <vcpu placement='static'>@cpu</vcpu>
+    <cputune>
+        <shares>@mhz</shares>
+    </cputune>
+    <memory unit="MiB">@memory</memory>
+    <currentMemory unit="MiB">@memory</currentMemory>
+    <os>
+      <type arch='x86_64' machine='pc-i440fx-xenial'>hvm</type>
+      <boot dev='hd'/>
+    </os>
+    <features>
+        <acpi />
+        <apic />
+    </features>
+    <clock offset="utc" />
+    <on_poweroff>destroy</on_poweroff>
+    <on_reboot>restart</on_reboot>
+    <on_crash>restart</on_crash>
+    <devices>
+        <emulator>/usr/bin/kvm-spice</emulator>
+        <disk device="disk" type="file">
+            <driver cache="none" name="qemu" type="raw" />
+            <source file="@pool/@name.img" />
+            <target dev="hda" />
+            <address bus="0" controller="0" target="0" type="drive" unit="0" />
+        </disk>
+        <interface type="network">
+            <source network="default" />
+        </interface>
+        <graphics port="-1" type="vnc" />
+    </devices>
+</domain>
